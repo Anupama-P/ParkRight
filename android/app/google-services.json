@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "849310239959",
+    "firebase_url": "https://park-right-e30d9.firebaseio.com",
+    "project_id": "park-right-e30d9",
+    "storage_bucket": "park-right-e30d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849310239959:android:49aabe40ee19b810",
+        "android_client_info": {
+          "package_name": "com.gale.parkright"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849310239959-m2s76dnq88s0n4oc62q637q6d4cdn0sr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRr4ybwx51_-AHl5iPqmNk7J1DZ_07Rzk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
