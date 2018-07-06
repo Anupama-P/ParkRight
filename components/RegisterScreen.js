@@ -13,10 +13,11 @@ import {
     ActivityIndicator
 } from 'react-native';
 
+import { createStackNavigator } from 'react-navigation';
+
 import DeviceInfo from 'react-native-device-info';
 
 export default class RegisterScreen extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -45,6 +46,8 @@ export default class RegisterScreen extends Component {
             this.setState({isSubmitting: false})
             this.setState({showRegisterButton: false})
             console.log(response)
+
+            this.props.navigation.navigate('OTPScreen')
         }).catch(err => {
             this.setState({isSubmitting: false})
             this.setState({showRegisterButton: true})
@@ -73,6 +76,7 @@ export default class RegisterScreen extends Component {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: '#ffffff',
             }}>
 
             <KeyboardAvoidingView behavior="padding" enabled>
@@ -104,6 +108,7 @@ export default class RegisterScreen extends Component {
                     <Button
                         theme='light'
                         onPress={this.callRegisterAPI.bind(this)}
+                        // onPress={() => this.props.navigation.navigate('OTP')}
                         title="Register"
                         color="#2F619B"
                         value="NORMAL FLAT"
