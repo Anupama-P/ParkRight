@@ -6,8 +6,10 @@ import {
   View,
   Image,
   TextInput,
-  ScrollView
+  ScrollView,
+  ImageBackground
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 
 
@@ -30,7 +32,7 @@ export default class SimilarFaces extends Component {
       },
       has_photo: false,
       photo: null,
-      face_data: null
+      numbers: null
     };
   }
 
@@ -40,13 +42,12 @@ export default class SimilarFaces extends Component {
     return (
       <View style={styles.container}>
 
-        <Image
+        <ImageBackground
           style={this.state.photo_style}
           source={this.state.photo}
           resizeMode={"contain"}
         >
-          {this._renderFaceBoxes.call(this)}
-        </Image>
+        </ImageBackground>
 
         <Button
           text="Pick Photo"
@@ -63,7 +64,7 @@ export default class SimilarFaces extends Component {
   _pickImage() {
 
     this.setState({
-      face_data: null
+      numbers: null
     });
 
     const options = {
@@ -89,7 +90,6 @@ export default class SimilarFaces extends Component {
       }
       else {
         let source = { uri: response.uri };
-
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
@@ -105,29 +105,6 @@ export default class SimilarFaces extends Component {
         });
       }
     });
-
-
-    // ImagePickerManager.showImagePicker(this.props.imagePickerOptions, (response) => {
-
-    //   if (response.error) {
-    //     alert('Error getting the image. Please try again.');
-    //   } else {
-
-    //     let source = { uri: response.uri };
-
-    //     this.setState({
-    //       photo_style: {
-    //         position: 'relative',
-    //         width: response.width,
-    //         height: response.height
-    //       },
-    //       has_photo: true,
-    //       photo: source,
-    //       photo_data: response.data
-    //     });
-
-    //   }
-    // });
 
   }
 
@@ -147,22 +124,46 @@ export default class SimilarFaces extends Component {
   _detectFaces() {
     //face: https://centralindia.api.cognitive.microsoft.com/face/v1.0
     //image:https://centralindia.api.cognitive.microsoft.com/vision/v1.0
-    RNFetchBlob.fetch('POST', 'https://centralindia.api.cognitive.microsoft.com/vision/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender', {
+    RNFetchBlob.fetch('POST', 'https://centralindia.api.cognitive.microsoft.com/vision/v1.0/ocr?language=en&detectOrientation=true', {
       'Accept': 'application/json',
       'Content-Type': 'application/octet-stream',
       'Ocp-Apim-Subscription-Key': this.props.apiKey
     }, this.state.photo_data)
       .then((res) => {
+        console.log(res);
         return res.json();
       })
       .then((json) => {
-
-        if (json.length) {
+        console.log(json);
+        if (json.regions.length) {
+          let final = '';
+          const lines = json.regions[0].lines;
+          lines.map((item) => {
+            item.words.map((word) => {
+              final = final.concat(word.text)
+            });
+          });
+          alert(final);
+          console.log(DeviceInfo);
           this.setState({
-            face_data: json
+            numbers: final
+          });
+          return fetch('http://192.168.3.126:8000/complaint/', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              complainant: "harsha.ashok@galepartners.com",
+              complaint_type: "WRONG_PARKING",
+              device_id: DeviceInfo.getUniqueID(),
+              vehicle_number: final,
+              vehicle_type: "BIKE",
+            }),
           });
         } else {
-          alert("Sorry, I can't see any faces in there.");
+          alert("Sorry, I can't see any numbers in there.");
         }
 
         return json;
@@ -171,42 +172,6 @@ export default class SimilarFaces extends Component {
         console.log(error);
         alert('Sorry, the request failed. Please try again.' + JSON.stringify(error));
       });
-  }
-
-  _renderFaceBoxes() {
-
-    if (this.state.face_data) {
-
-      let views = _.map(this.state.face_data, (x) => {
-
-        let box = {
-          position: 'absolute',
-          top: x.faceRectangle.top,
-          left: x.faceRectangle.left
-        };
-
-        let style = {
-          width: x.faceRectangle.width,
-          height: x.faceRectangle.height,
-          borderWidth: 2,
-          borderColor: '#fff',
-        };
-
-        let attr = {
-          color: '#fff',
-        };
-
-        return (
-          <View key={x.faceId} style={box}>
-            <View style={style}></View>
-            <Text style={attr}>{x.faceAttributes.gender}, {x.faceAttributes.age} y/o</Text>
-          </View>
-        );
-      });
-
-      return <View>{views}</View>
-    }
-
   }
 
 }
