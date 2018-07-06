@@ -145,7 +145,6 @@ export default class SimilarFaces extends Component {
   }
 
   _detectFaces() {
-    debugger;
     //face: https://centralindia.api.cognitive.microsoft.com/face/v1.0
     //image:https://centralindia.api.cognitive.microsoft.com/vision/v1.0
     RNFetchBlob.fetch('POST', 'https://centralindia.api.cognitive.microsoft.com/vision/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender', {
@@ -172,8 +171,6 @@ export default class SimilarFaces extends Component {
         console.log(error);
         alert('Sorry, the request failed. Please try again.' + JSON.stringify(error));
       });
-
-
   }
 
   _renderFaceBoxes() {

@@ -5,6 +5,7 @@ import {
   View,
   Text
 } from 'react-native';
+import App from './App';
 
 import SimilarFaces from './components/SimilarFaces';
 
@@ -45,4 +46,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('face', () => RNSimilar);
+AppRegistry.registerComponent('ParkRight', () => RNSimilar);
