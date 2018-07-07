@@ -29,6 +29,18 @@ const StackNavigator = createStackNavigator({
         navigationOptions: {
             header: null,
         }
+    },
+    MyComplaints: {
+        screen: MyComplaints,
+        navigationOptions: {
+            header: null,
+        }
+    },
+    VehicleList: {
+        screen: VehicleList,
+        navigationOptions: {
+            header: null,
+        }
     }
 });
 

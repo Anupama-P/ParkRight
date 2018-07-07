@@ -7,10 +7,10 @@ import {
   Image,
   TextInput,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  Picker
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-
 
 
 import NativeModules, { ImagePickerManager } from 'NativeModules';
@@ -50,10 +50,33 @@ export default class SimilarFaces extends Component {
         </ImageBackground>
 
         <Button
+          text="My Complaints"
+          onPress={() => this.props.navigation.navigate('MyComplaints')}
+          button_styles={styles.button}
+          button_text_styles={styles.button_text} />
+
+        <Button
+          text="Vehicle List"
+          onPress={() => this.props.navigation.navigate('VehicleList')}
+          button_styles={styles.button}
+          button_text_styles={styles.button_text} />
+
+        <Button
           text="Pick Photo"
           onpress={this._pickImage.bind(this)}
           button_styles={styles.button}
           button_text_styles={styles.button_text} />
+
+        <Picker
+          selectedValue={this.state.complaint}
+          style={{ height: 50, width: 400 }}
+          onValueChange={(itemValue, itemIndex) => this.setState({complaint: itemValue})}>
+          <Picker.Item label="Select Reason" value="" />
+          <Picker.Item label="Vehicle has no sticker" value="NO_STICKER" />
+          <Picker.Item label="Vehicle not parked in a proper place." value="NO_STICKER" />
+          <Picker.Item label="Vehicle not parked properly." value="WRONG_PARKING" />
+        </Picker>
+
 
         {this._renderDetectFacesButton.call(this)}
 
