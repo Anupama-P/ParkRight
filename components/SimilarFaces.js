@@ -8,18 +8,20 @@ import {
   TextInput,
   ScrollView,
   ImageBackground,
-  Picker
+  Picker,
+  Button
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 
 import NativeModules, { ImagePickerManager } from 'NativeModules';
-import Button from './Button';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 var ImagePicker = require('react-native-image-picker');
 
 import _ from 'lodash';
+
+const idDev = 'ee33bdcfed343683';
 
 export default class SimilarFaces extends Component {
   constructor(props) {
@@ -27,12 +29,13 @@ export default class SimilarFaces extends Component {
     this.state = {
       photo_style: {
         position: 'relative',
-        width: 480,
-        height: 480
+        width: 400,
+        height: 400
       },
       has_photo: false,
       photo: null,
-      numbers: null
+      numbers: null,
+      complaint_type: ''
     };
   }
 
@@ -49,33 +52,27 @@ export default class SimilarFaces extends Component {
         >
         </ImageBackground>
 
-        <Button
-          text="My Complaints"
-          onPress={() => this.props.navigation.navigate('MyComplaints')}
-          button_styles={styles.button}
-          button_text_styles={styles.button_text} />
 
-        <Button
-          text="Vehicle List"
-          onPress={() => this.props.navigation.navigate('VehicleList')}
-          button_styles={styles.button}
-          button_text_styles={styles.button_text} />
-
-        <Button
-          text="Pick Photo"
-          onpress={this._pickImage.bind(this)}
-          button_styles={styles.button}
-          button_text_styles={styles.button_text} />
-
-        <Picker
-          selectedValue={this.state.complaint}
-          style={{ height: 50, width: 400 }}
-          onValueChange={(itemValue, itemIndex) => this.setState({complaint: itemValue})}>
-          <Picker.Item label="Select Reason" value="" />
-          <Picker.Item label="Vehicle has no sticker" value="NO_STICKER" />
-          <Picker.Item label="Vehicle not parked in a proper place." value="NO_STICKER" />
-          <Picker.Item label="Vehicle not parked properly." value="WRONG_PARKING" />
-        </Picker>
+        {this.state.has_photo == false ?
+          <Button
+            theme='light'
+            onPress={this._pickImage.bind(this)}
+            title="Take a Picture"
+            color="#2F619B"
+            value="NORMAL FLAT"
+            buttonStyle={{width:"100%"}}
+          />
+          :
+          <Picker
+            selectedValue={this.state.complaint_type}
+            style={{ height: 50, width: 400 }}
+            onValueChange={(itemValue, itemIndex) => this.setState({complaint_type: itemValue})}>
+            <Picker.Item label="Select Reason" value="" />
+            <Picker.Item label="Vehicle has no sticker" value="NO_STICKER" />
+            <Picker.Item label="Vehicle not parked in a proper place." value="NO_STICKER" />
+            <Picker.Item label="Vehicle not parked properly." value="WRONG_PARKING" />
+          </Picker>
+        }
 
 
         {this._renderDetectFacesButton.call(this)}
@@ -92,8 +89,8 @@ export default class SimilarFaces extends Component {
 
     const options = {
       quality: 1.0,
-      maxWidth: 500,
-      maxHeight: 500,
+      maxWidth: 400,
+      maxHeight: 400,
       storageOptions: {
         skipBackup: true
       }
@@ -135,11 +132,13 @@ export default class SimilarFaces extends Component {
     if (this.state.has_photo) {
       return (
         <Button
-          text="Detect Faces"
-          title="Detect Faces"
-          onpress={this._detectFaces.bind(this)}
-          button_styles={styles.button}
-          button_text_styles={styles.button_text} />
+            theme='light'
+            onPress={this._detectFaces.bind(this)}
+            title="Submit Complain"
+            color="#2F619B"
+            value="NORMAL FLAT"
+            buttonStyle={{width:"100%"}}
+        />
       );
     }
   }
@@ -167,7 +166,7 @@ export default class SimilarFaces extends Component {
             });
           });
           alert(final);
-          console.log(DeviceInfo);
+          // console.log(DeviceInfo);
           this.setState({
             numbers: final
           });
@@ -179,8 +178,8 @@ export default class SimilarFaces extends Component {
             },
             body: JSON.stringify({
               complainant: "harsha.ashok@galepartners.com",
-              complaint_type: "WRONG_PARKING",
-              device_id: DeviceInfo.getUniqueID(),
+              complaint_type: this.state.complaint_type,
+              device_id: idDev,
               vehicle_number: final,
               vehicle_type: "BIKE",
             }),
@@ -202,18 +201,10 @@ export default class SimilarFaces extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#ccc'
-  },
-  button: {
-    margin: 10,
-    padding: 15,
-    backgroundColor: '#529ecc'
-  },
-  button_text: {
-    color: '#FFF',
-    fontSize: 20
   }
 });
 

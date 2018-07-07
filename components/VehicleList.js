@@ -19,9 +19,14 @@ import { createStackNavigator } from 'react-navigation';
 
 import DeviceInfo from 'react-native-device-info';
 
+const idDev = 'ee33bdcfed343683'
+
 export default class VehicleList extends Component {
+
   constructor(props) {
       super(props);
+      console.log(props.args)
+      console.log(this.props.navigation.getParam('DeviceUniqueID', '123'))
       this.state = {
         text: '',
         DisplayVehicleList: [],
@@ -29,6 +34,7 @@ export default class VehicleList extends Component {
   };
 
   componentDidMount() {
+      // var DeviceInfo =  require('react-native-device-info');
       return fetch('http://parkright.herokuapp.com/vehicle/', {
         method: 'POST',
         headers: {
@@ -36,7 +42,7 @@ export default class VehicleList extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          device_id: DeviceInfo.getUniqueId(),
+          device_id: idDev,
         })
       }).then(response => {
         if (JSON.parse(response._bodyText)) {
@@ -58,7 +64,7 @@ export default class VehicleList extends Component {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              device_id: DeviceInfo.getUniqueId(),
+              device_id: idDev,
               vehicle_number: this.state.text,
           }),
       }).then(response => {
@@ -85,7 +91,7 @@ export default class VehicleList extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            device_id: DeviceInfo.getUniqueId(),
+            device_id: idDev,
             vehicle_number: text,
         }),
       }).then(response => {
@@ -102,19 +108,20 @@ export default class VehicleList extends Component {
     console.log(this.state.DisplayVehicleList);
     return (
       <View style={{
-        marginTop: 70,
-        marginLeft: 20,
+        flex: 1,
         flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#ffffff',
-        width: '90%'
+        padding: 20
       }}>
 
         <KeyboardAvoidingView behavior="padding" enabled>
-          <Text style={{fontSize: 40}}>Your Registered Vehicle Numbers:</Text>
+          <Text style={{fontSize: 30}}>Your Registered Vehicle Numbers:</Text>
           <View>
             {this.state.DisplayVehicleList.map((item) => {
               return (
-                <View style={{marginTop: 20, flexDirection:'row'}}>
+                <View style={{marginTop: 10, flexDirection:'row'}}>
                   <Text style={{fontSize: 30}}>{item.vehicle_number}</Text>
                   <Icon
                     name='delete'
@@ -137,7 +144,7 @@ export default class VehicleList extends Component {
             style={{
               height: 60,
               width: 300,
-              marginTop: 50,
+              marginTop: 40,
               fontSize: 25
             }}
             value={this.state.text}

@@ -5,13 +5,14 @@ import {
     View
 } from 'react-native';
 
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import RegisterScreen from './components/RegisterScreen';
 import OTPScreen from './components/OTPScreen';
 import SimilarFaces from './components/SimilarFaces';
 import VehicleList from './components/VehicleList';
 import MyComplaints from './components/MyComplaints';
+import LoggedInScreens from './components/LoggedInScreens';
 
 const StackNavigator = createStackNavigator({
     Home: {
@@ -26,25 +27,32 @@ const StackNavigator = createStackNavigator({
             title: 'OTP'
         }
     },
-    SimilarFaces: {
-        screen: SimilarFaces,
+    // SimilarFaces: {
+    //     screen: SimilarFaces,
+    //     navigationOptions: {
+    //         header: null,
+    //     }
+    // },
+    LoggedInScreens: {
+        screen: LoggedInScreens,
         navigationOptions: {
             header: null,
         }
     },
-    MyComplaints: {
-        screen: MyComplaints,
-        navigationOptions: {
-            header: null,
-        }
-    },
-    VehicleList: {
-        screen: VehicleList,
-        navigationOptions: {
-            header: null,
-        }
-    }
+    // MyComplaints: {
+    //     screen: MyComplaints,
+    //     navigationOptions: {
+    //         header: null,
+    //     }
+    // },
+    // VehicleList: {
+    //     screen: VehicleList,
+    //     navigationOptions: {
+    //         header: null,
+    //     }
+    // }
 });
+
 
 const image_picker_options = {
     title: 'Select Photo',
@@ -85,4 +93,5 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('StackNavigator', () => StackNavigator);
+AppRegistry.registerComponent('BottomTabNavigator', () => BottomTabNavigator);
 AppRegistry.registerComponent('ParkRight', () => IndexScreen);
