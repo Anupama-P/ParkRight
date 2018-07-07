@@ -32,6 +32,8 @@ export default class OTPScreen extends Component {
             this.setState({isSubmitting: true})
             this.setState({hideOTPmessage: true})
 
+            console.log(code)
+
             return fetch('http://parkright.herokuapp.com/user/verify/', {
                 method: 'POST',
                 headers: {
@@ -44,12 +46,14 @@ export default class OTPScreen extends Component {
                 }),
             }).then(response => {
                 this.setState({isSubmitting: false})
+                console.log(response)
+
                 if (response.status == '401') {
                     this.setState({errorMessage: 'Invalid OTP'})
                 } else if (response.status == '200' && JSON.parse(response._bodyText).registration) {
-                    this.props.navigation.navigate('VehicleList');
+                    this.props.navigation.navigate('LoggedInScreens');
                 } else if (response.status == '200') {
-                    this.props.navigation.navigate('SimilarFaces');
+                    this.props.navigation.navigate('LoggedInScreens');
                 } else {
                     this.setState({
                         errorMessage: 'Invalid Response: Status Code' + response.status

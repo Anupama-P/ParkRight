@@ -29,7 +29,7 @@ export default class MyComplaints extends Component {
   };
 
   componentWillMount() {
-    const url = DeviceInfo.getUniqueId();
+    const url = 'ee33bdcfed343683';
     return fetch(`http://parkright.herokuapp.com/complaint/?device_id=${url}`, {
       method: 'GET',
       headers: {

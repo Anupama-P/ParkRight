@@ -28,6 +28,12 @@ export default class RegisterScreen extends Component {
         }
     };
 
+    // componentDidMount() {
+    //     this.setState({
+    //         showRegisterButton: true
+    //     })
+    // }
+
     callRegisterAPI() {
         this.setState({isSubmitting: true})
         Keyboard.dismiss()
