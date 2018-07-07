@@ -171,7 +171,7 @@ export default class SimilarFaces extends Component {
           this.setState({
             numbers: final
           });
-          return fetch('http://192.168.3.126:8000/complaint/', {
+          return fetch('http://parkright.herokuapp.com/complaint/', {
             method: 'POST',
             headers: {
               Accept: 'application/json',

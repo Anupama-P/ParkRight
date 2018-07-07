@@ -32,7 +32,7 @@ export default class RegisterScreen extends Component {
         this.setState({isSubmitting: true})
         Keyboard.dismiss()
 
-        return fetch('http://192.168.3.126:8000/user/verify/', {
+        return fetch('http://parkright.herokuapp.com/user/verify/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -97,8 +97,9 @@ export default class RegisterScreen extends Component {
                 <TextInput
                     onChangeText={( email ) => this.validateEmail(email)}
                     style={{
-                        height: 40,
-                        width: 300,
+                      width: 300,
+                      height: 60,
+                      fontSize: 25
                     }}
                     underlineColorAndroid={this.state.underlineColorAndroid}
                     value={this.state.email}

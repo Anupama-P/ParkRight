@@ -32,7 +32,7 @@ export default class OTPScreen extends Component {
             this.setState({isSubmitting: true})
             this.setState({hideOTPmessage: true})
 
-            return fetch('http://192.168.3.126:8000/user/verify/', {
+            return fetch('http://parkright.herokuapp.com/user/verify/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -46,8 +46,10 @@ export default class OTPScreen extends Component {
                 this.setState({isSubmitting: false})
                 if (response.status == '401') {
                     this.setState({errorMessage: 'Invalid OTP'})
+                } else if (response.status == '200' && JSON.parse(response._bodyText).registration) {
+                    this.props.navigation.navigate('VehicleList');
                 } else if (response.status == '200') {
-                    this.props.navigation.navigate('SimilarFaces')
+                    this.props.navigation.navigate('SimilarFaces');
                 } else {
                     this.setState({
                         errorMessage: 'Invalid Response: Status Code' + response.status

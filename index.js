@@ -10,6 +10,8 @@ import { createStackNavigator } from 'react-navigation';
 import RegisterScreen from './components/RegisterScreen';
 import OTPScreen from './components/OTPScreen';
 import SimilarFaces from './components/SimilarFaces';
+import VehicleList from './components/VehicleList';
+import MyComplaints from './components/MyComplaints';
 
 const StackNavigator = createStackNavigator({
     Home: {
